@@ -1,4 +1,4 @@
-import Button from './../components/Button'
+import Button from './../components/ListingButton'
 import { ignoredJobs, isJobIgnored, getIgnoredJobKey } from './../lib/storage'
 
 const listingPageRegex = /^https:\/\/www\.104\.com\.tw\/jobs\/search/
@@ -7,6 +7,10 @@ const jobUrlRegex = /www\.104\.com\.tw\/job\/(\w+)/
 // check each job if it should be hidden and append the hide-button
 const iterateJobs = () => {
   const $jobList = document.querySelector('#js-job-content')
+  if (!$jobList) {
+    return
+  }
+
   ;[...$jobList.querySelectorAll('article')].reverse().every(($job, i) => {
     const { jobName, jobNo, custName, isLast } = $job.dataset
     if (isLast) {
