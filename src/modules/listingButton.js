@@ -1,5 +1,5 @@
 import Button from './../components/ListingButton'
-import { ignoredJobs, isJobIgnored, getIgnoredJobKey } from './../lib/storage'
+import { isJobIgnored, addIgnoredJob } from '../storage/ignoredJobs'
 
 const listingPageRegex = /^https:\/\/www\.104\.com\.tw\/jobs\/search/
 const jobUrlRegex = /www\.104\.com\.tw\/job\/(\w+)/
@@ -38,9 +38,8 @@ const iterateJobs = () => {
 }
 
 const ignoreJob = ({ jobName, jobNo, custName, jobUrl, $job }) => {
-  ignoredJobs[getIgnoredJobKey({ jobName, jobNo, custName })] = jobUrl.match(
-    jobUrlRegex
-  )[1]
+  const jobId = jobUrl.match(jobUrlRegex)[1]
+  addIgnoredJob({ jobName, jobNo, jobId, custName })
   hideJob($job)
 }
 

@@ -1,5 +1,9 @@
 import Button from '../components/ItemButton'
-import { ignoredJobs, isJobIgnored, getIgnoredJobKey } from '../lib/storage'
+import {
+  isJobIgnored,
+  addIgnoredJob,
+  removeIgnoredJob
+} from '../storage/ignoredJobs'
 
 const $target = document.querySelector('.job-header__btn')
 if ($target) {
@@ -23,14 +27,13 @@ if ($target) {
   })
 
   const toggleIgnoreJob = () => {
+    const jobId = window.location.href.match(/www\.104\.com\.tw\/job\/(\w+)/)[1]
     isIgnored = !isIgnored
     Btn.$$set({ isIgnored })
     if (isIgnored) {
-      ignoredJobs[
-        getIgnoredJobKey({ jobName, jobNo, custName })
-      ] = window.location.href.match(/www\.104\.com\.tw\/job\/(\w+)/)[1]
+      addIgnoredJob({ jobName, jobNo, jobId, custName })
     } else {
-      delete ignoredJobs[getIgnoredJobKey({ jobName, jobNo, custName })]
+      removeIgnoredJob({ jobName, jobNo, jobId, custName })
     }
   }
 }
