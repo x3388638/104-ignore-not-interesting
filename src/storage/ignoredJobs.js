@@ -62,3 +62,8 @@ export const isJobIgnored = (jobInfo) => {
 export const getIgnoredJobKey = ({ jobName, jobNo, jobId, custName }) => {
   return [jobName, jobNo, jobId, custName].join(separator)
 }
+
+export const parseIgnoredJobKey = (key) => {
+  const [jobName, jobNo, jobId, custName] = key.split(separator)
+  return { jobName, jobNo, jobId, custName }
+}
