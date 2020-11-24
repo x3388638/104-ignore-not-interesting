@@ -5,7 +5,7 @@ const listingPageRegex = /^https:\/\/www\.104\.com\.tw\/jobs\/search/
 const jobUrlRegex = /www\.104\.com\.tw\/job\/(\w+)/
 
 // check each job if it should be hidden and append the hide-button
-const iterateJobs = () => {
+const iterateJobs = (checkAll = false) => {
   const $jobList = document.querySelector('#js-job-content')
   if (!$jobList) {
     return
@@ -13,20 +13,28 @@ const iterateJobs = () => {
 
   ;[...$jobList.querySelectorAll('article')].reverse().every(($job, i) => {
     const { jobName, jobNo, custName, isLast } = $job.dataset
-    if (isLast) {
+    const jobId = $job
+      .querySelector('a.js-job-link')
+      .getAttribute('href')
+      .match(jobUrlRegex)[1]
+
+    if (isLast && !checkAll) {
       return false
     }
 
-    if (isJobIgnored({ jobName, jobNo, custName })) {
+    if (isJobIgnored({ jobName, jobNo, jobId, custName })) {
       hideJob($job)
     } else {
-      new Button({
-        target: $job.querySelector('.b-block__right'),
-        props: {
-          onClick: (jobUrl) =>
-            ignoreJob({ jobName, jobNo, custName, jobUrl, $job })
-        }
-      })
+      showJob($job)
+      const isButtonExist = !!$job.querySelector('button[class*=svelte]')
+      if (!isButtonExist) {
+        new Button({
+          target: $job.querySelector('.b-block__right'),
+          props: {
+            onClick: () => ignoreJob({ jobName, jobNo, custName, jobId, $job })
+          }
+        })
+      }
     }
 
     if (i === 0) {
@@ -37,17 +45,23 @@ const iterateJobs = () => {
   })
 }
 
-const ignoreJob = ({ jobName, jobNo, custName, jobUrl, $job }) => {
-  const jobId = jobUrl.match(jobUrlRegex)[1]
+const ignoreJob = ({ jobName, jobNo, jobId, custName }) => {
   addIgnoredJob({ jobName, jobNo, jobId, custName })
-  hideJob($job)
 }
 
 const hideJob = ($job) => {
-  $job.className += ' hide'
+  if (!$job.className.endsWith(' hide')) {
+    $job.className += ' hide'
+  }
 }
 
-const replaceState = window.history.replaceState
+const showJob = ($job) => {
+  if ($job.className.endsWith(' hide')) {
+    $job.className = $job.className.split(' hide')[0]
+  }
+}
+
+const replaceState = window.history.replaceState.bind(window.history)
 window.history.replaceState = (...args) => {
   window.dispatchEvent(new CustomEvent('urlchange'))
   replaceState(...args)
@@ -59,6 +73,10 @@ window.addEventListener('urlchange', () => {
       iterateJobs()
     }, 449)
   }
+})
+
+window.addEventListener('ignoredJobListChange', () => {
+  iterateJobs(true)
 })
 
 iterateJobs()

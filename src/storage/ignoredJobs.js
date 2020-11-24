@@ -16,18 +16,24 @@ const setStorage = (obj) => {
   localStorage[IGNORED_JOBS] = JSON.stringify(obj)
 }
 
-export const ignoredJobs = new Proxy(JSON.parse(localStorage[IGNORED_JOBS]), {
-  set: (target, prop, val) => {
-    target[prop] = val
-    setStorage(target)
-    return true
-  },
-  deleteProperty: (target, prop) => {
-    delete target[prop]
-    setStorage(target)
-    return true
-  }
-})
+const createIgnoredJobsProxy = (initialData = {}) => {
+  return new Proxy(initialData, {
+    set: (target, prop, val) => {
+      target[prop] = val
+      setStorage(target)
+      return true
+    },
+    deleteProperty: (target, prop) => {
+      delete target[prop]
+      setStorage(target)
+      return true
+    }
+  })
+}
+
+let ignoredJobs = createIgnoredJobsProxy(JSON.parse(localStorage[IGNORED_JOBS]))
+
+export const getIgnoredJobs = () => ({ ...ignoredJobs })
 
 /**
  * Add a job to ignored list
@@ -41,6 +47,7 @@ export const addIgnoredJob = ({ jobName, jobNo, jobId, custName }) => {
   ignoredJobs[
     getIgnoredJobKey({ jobName, jobNo, jobId, custName })
   ] = Date.now()
+  dispatchChangeEvent()
 }
 
 /**
@@ -53,6 +60,7 @@ export const addIgnoredJob = ({ jobName, jobNo, jobId, custName }) => {
  */
 export const removeIgnoredJob = ({ jobName, jobNo, jobId, custName }) => {
   delete ignoredJobs[getIgnoredJobKey({ jobName, jobNo, jobId, custName })]
+  dispatchChangeEvent()
 }
 
 export const isJobIgnored = (jobInfo) => {
@@ -67,3 +75,24 @@ export const parseIgnoredJobKey = (key) => {
   const [jobName, jobNo, jobId, custName] = key.split(separator)
   return { jobName, jobNo, jobId, custName }
 }
+
+const dispatchChangeEvent = () => {
+  window.dispatchEvent(
+    new CustomEvent('ignoredJobListChange', {
+      detail: { ...ignoredJobs }
+    })
+  )
+}
+
+// localStorage changed in other tab
+window.addEventListener('storage', ({ key, newValue }) => {
+  if (key === IGNORED_JOBS) {
+    try {
+      const newObj = JSON.parse(newValue)
+      ignoredJobs = createIgnoredJobsProxy(newObj)
+      dispatchChangeEvent()
+    } catch {
+      // no-op
+    }
+  }
+})
