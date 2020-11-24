@@ -12,7 +12,7 @@
   .JobList__list {
     list-style: none;
     padding: 0 3px;
-    max-height: 400px;
+    max-height: 350px;
     overflow: auto;
   }
 

@@ -1,5 +1,6 @@
 const IGNORED_JOBS = '@104IgnoreNotInteresting:ignoredJobs'
 const separator = '\u200b'
+export const IGNORED_JOB_LIST_CHANGE = 'IGNORED_JOB_LIST_CHANGE'
 
 // init localStorage
 const { localStorage } = window
@@ -63,10 +64,28 @@ export const removeIgnoredJob = ({ jobName, jobNo, jobId, custName }) => {
   dispatchChangeEvent()
 }
 
+/**
+ * Return if job is ignored
+ * @param {Object} jobInfo
+ * @param {String} jobInfo.jobName
+ * @param {String} jobInfo.jobNo
+ * @param {String} jobInfo.jobId
+ * @param {String} jobInfo.custName
+ * @returns {Boolean}
+ */
 export const isJobIgnored = (jobInfo) => {
   return !!ignoredJobs[getIgnoredJobKey(jobInfo)]
 }
 
+/**
+ * Gen object key for each job to access in ignored job object
+ * @param {Object} jobInfo
+ * @param {String} jobInfo.jobName
+ * @param {String} jobInfo.jobNo
+ * @param {String} jobInfo.jobId
+ * @param {String} jobInfo.custName
+ * @returns {String}
+ */
 export const getIgnoredJobKey = ({ jobName, jobNo, jobId, custName }) => {
   return [jobName, jobNo, jobId, custName].join(separator)
 }
@@ -78,7 +97,7 @@ export const parseIgnoredJobKey = (key) => {
 
 const dispatchChangeEvent = () => {
   window.dispatchEvent(
-    new CustomEvent('ignoredJobListChange', {
+    new CustomEvent(IGNORED_JOB_LIST_CHANGE, {
       detail: { ...ignoredJobs }
     })
   )

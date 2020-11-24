@@ -1,5 +1,9 @@
 import Button from './../components/ListingButton'
-import { isJobIgnored, addIgnoredJob } from '../storage/ignoredJobs'
+import {
+  isJobIgnored,
+  addIgnoredJob,
+  IGNORED_JOB_LIST_CHANGE
+} from '../storage/ignoredJobs'
 
 const listingPageRegex = /^https:\/\/www\.104\.com\.tw\/jobs\/search/
 const jobUrlRegex = /www\.104\.com\.tw\/job\/(\w+)/
@@ -61,22 +65,33 @@ const showJob = ($job) => {
   }
 }
 
-const replaceState = window.history.replaceState.bind(window.history)
-window.history.replaceState = (...args) => {
-  window.dispatchEvent(new CustomEvent('urlchange'))
-  replaceState(...args)
+const bindEvent = () => {
+  // handle infinite scroll & pagination
+  const replaceState = window.history.replaceState.bind(window.history)
+  window.history.replaceState = (...args) => {
+    window.dispatchEvent(new CustomEvent('urlchange'))
+    replaceState(...args)
+  }
+
+  window.addEventListener('urlchange', () => {
+    if (listingPageRegex.test(window.location.href)) {
+      setTimeout(() => {
+        iterateJobs()
+      }, 449)
+    }
+  })
+
+  // re-iterate while storage updated
+  window.addEventListener(IGNORED_JOB_LIST_CHANGE, () => {
+    iterateJobs(true)
+  })
 }
 
-window.addEventListener('urlchange', () => {
-  if (listingPageRegex.test(window.location.href)) {
-    setTimeout(() => {
-      iterateJobs()
-    }, 449)
+const setup = () => {
+  if (document.querySelector('#js-job-content')) {
+    bindEvent()
+    iterateJobs()
   }
-})
+}
 
-window.addEventListener('ignoredJobListChange', () => {
-  iterateJobs(true)
-})
-
-iterateJobs()
+setup()
