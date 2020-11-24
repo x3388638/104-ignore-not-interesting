@@ -1,7 +1,6 @@
 <style>
   .JobList {
     background: #fff;
-    max-height: 600px;
     overflow: auto;
     margin-top: 15px;
   }
@@ -13,12 +12,14 @@
   .JobList__list {
     list-style: none;
     padding: 0 3px;
+    max-height: 400px;
+    overflow: auto;
   }
 
   .JobItem {
     padding: 5px;
     margin: 5px;
-    background: rgb(199, 233, 227);
+    background: #fffaf2;
     position: relative;
   }
 
@@ -56,8 +57,12 @@
     cursor: pointer;
   }
 
+  .Actions__item--link {
+    color: #000;
+  }
+
   .Actions__item--link:hover {
-    background: #00e6ff52;
+    background: #0070ff52;
   }
 
   .Actions__item--delete:hover {
@@ -67,6 +72,7 @@
 
 <script>
   export let jobList = []
+  export let onRemove
   import LinkIcon from './icon/LinkIcon'
   import TrashIcon from './icon/TrashIcon'
 </script>
@@ -74,15 +80,22 @@
 <div class="JobList">
   <h3 class="JobList__title">已過濾職缺</h3>
   <ul class="JobList__list">
-    <li class="JobItem">
-      <span class="JobItem__text">Frontend Engineer / 前端工程師</span>
-      <span
-        class="JobItem__text"
-      >英屬維京群島商耐思財富投資有限公司台灣分</span>
-      <span class="Actions">
-        <span class="Actions__item Actions__item--link"><LinkIcon /></span>
-        <span class="Actions__item Actions__item--delete"><TrashIcon /></span>
-      </span>
-    </li>
+    {#each jobList as { jobName, jobNo, jobId, custName } (jobId)}
+      <li class="JobItem">
+        <span class="JobItem__text">{jobName}</span>
+        <span class="JobItem__text">{custName}</span>
+        <span class="Actions">
+          <a
+            href={`https://www.104.com.tw/job/${jobId}`}
+            class="Actions__item Actions__item--link"
+            target="_blank"
+          ><LinkIcon /></a>
+          <span
+            class="Actions__item Actions__item--delete"
+            on:click={onRemove({ jobName, jobNo, jobId, custName })}
+          ><TrashIcon /></span>
+        </span>
+      </li>
+    {/each}
   </ul>
 </div>
