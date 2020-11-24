@@ -1,10 +1,10 @@
 {
   "name": "104-ignore-not-interesting",
   "version": "1.0.0",
-  "description": "",
+  "description": "Ignore jobs you are not interested in on 104",
   "main": "src/index.js",
   "scripts": {
-    "build": "webpack",
+    "build": "webpack && cat meta.js index.user.js > temp && mv temp index.user.js",
     "prettier:check": "prettier --check './**/*.{js,json,svelte}'",
     "prettier:write": "prettier --write './**/*.{js,json,svelte}'",
     "lint": "eslint './**/*.{js,svelte}'",
