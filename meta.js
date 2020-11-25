@@ -7,7 +7,7 @@
 // @match        https://www.104.com.tw/jobs/search/*
 // @match        https://www.104.com.tw/job/*
 // @license      MIT
-// @homepage     https://github.com/x3388638/104-ignore-not-interesting
+// @homepageURL     https://github.com/x3388638/104-ignore-not-interesting
 // @updateURL    https://openuserjs.org/meta/x3388638/104-ignore-not-interesting.meta.js
 // @grant        none
 // ==/UserScript==
