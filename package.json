@@ -8,17 +8,20 @@
     "prettier:check": "prettier --check './**/*.{js,json,svelte}'",
     "prettier:write": "prettier --write './**/*.{js,json,svelte}'",
     "lint": "eslint './**/*.{js,svelte}'",
-    "lint:fix": "eslint --fix './**/*.{js,svelte}'"
+    "lint:fix": "eslint --fix './**/*.{js,svelte}'",
+    "test:func": "codeceptjs run"
   },
   "author": "YY",
   "license": "MIT",
   "devDependencies": {
+    "codeceptjs": "^3.0.2",
     "eslint": "^7.13.0",
     "eslint-plugin-svelte3": "^2.7.3",
     "husky": "^4.3.0",
     "lint-staged": "^10.5.1",
     "prettier": "^2.1.2",
     "prettier-plugin-svelte": "^1.4.1",
+    "puppeteer": "^5.5.0",
     "svelte": "^3.29.7",
     "svelte-loader": "^2.13.6",
     "webpack": "^5.6.0",
@@ -34,7 +37,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged",
+      "pre-push": "npm run test:func"
     }
   }
 }

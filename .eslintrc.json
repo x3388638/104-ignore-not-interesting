@@ -18,5 +18,12 @@
       "files": ["*.svelte"],
       "processor": "svelte3/svelte3"
     }
-  ]
+  ],
+  "globals": {
+    "Feature": "readonly",
+    "Scenario": "readonly",
+    "Before": "readonly",
+    "actor": "readonly",
+    "locate": "readonly"
+  }
 }
