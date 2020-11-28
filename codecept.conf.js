@@ -3,7 +3,7 @@ exports.config = {
   output: './__e2e__/output',
   helpers: {
     Puppeteer: {
-      url: 'https://www.104.com.tw/jobs/search/',
+      url: 'https://www.104.com.tw/jobs/search',
       show: true,
       windowSize: '1200x900'
     }
