@@ -9,11 +9,13 @@
     "prettier:write": "prettier --write './**/*.{js,json,svelte}'",
     "lint": "eslint './**/*.{js,svelte}'",
     "lint:fix": "eslint --fix './**/*.{js,svelte}'",
-    "test:func": "codeceptjs run"
+    "test:func": "codeceptjs run",
+    "test:func:ui": "codecept-ui --app"
   },
   "author": "YY",
   "license": "MIT",
   "devDependencies": {
+    "@codeceptjs/ui": "^0.4.2",
     "codeceptjs": "^3.0.2",
     "eslint": "^7.13.0",
     "eslint-plugin-svelte3": "^2.7.3",

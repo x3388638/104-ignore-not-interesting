@@ -14,7 +14,6 @@ Scenario('Render buttons and ignored job list', ({ I }) => {
 })
 
 Scenario('Ignore job', async ({ I }) => {
-  I.seeElement(listingPage.firstJobInlist)
   I.seeNumberOfElements(listingPage.ignoredJobs, 0)
   const jobName = await I.grabAttributeFrom(
     listingPage.firstJobInlist,
@@ -43,7 +42,6 @@ Scenario('Ignore job', async ({ I }) => {
   assert.strictEqual(ignoredCustName, custName)
 
   I.amOnPage(link)
-  I.wait(5)
   I.injectScript()
   I.seeElement(itemPage['itemButton-ignored'])
 })
