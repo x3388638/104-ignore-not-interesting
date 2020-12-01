@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         104-ignore-not-interesting
 // @namespace    https://2yc.tw
-// @version      1.0.0
+// @version      1.0.1
 // @description  Ignore jobs you are not interested in on 104
 // @author       YY
 // @match        https://www.104.com.tw/jobs/search/*

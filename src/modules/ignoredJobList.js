@@ -30,7 +30,7 @@ const setup = () => {
   })
 
   window.addEventListener(IGNORED_JOB_LIST_CHANGE, ({ detail }) => {
-    IgnoredJobList.$$set({ jobList: sortJobsByTimestamp(detail) })
+    IgnoredJobList.$set({ jobList: sortJobsByTimestamp(detail) })
   })
 }
 

@@ -3,8 +3,7 @@ const listingPage = {
     css: '#js-job-content article:first-child'
   },
   firstButtonInList: {
-    css:
-      '#js-job-content article:first-child  .b-block__right button[class*=svelte]'
+    css: '#js-job-content article:first-child  .b-block__right .ListingButton'
   },
   jobList: {
     css: '#main-content > aside .JobList'
@@ -16,10 +15,10 @@ const listingPage = {
 
 const itemPage = {
   itemButton: {
-    css: '.job-header .job-header__btn button[class*=svelte]'
+    css: '.job-header .job-header__btn .ItemButton'
   },
   'itemButton-ignored': {
-    css: '.job-header .job-header__btn button[class*=svelte].btn-secondary'
+    css: '.job-header .job-header__btn .ItemButton.btn-secondary'
   }
 }
 

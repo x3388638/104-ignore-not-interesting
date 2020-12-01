@@ -1,5 +1,5 @@
 <style>
-  button {
+  .ItemButton {
     float: left;
     margin-top: 5px;
   }
@@ -11,6 +11,8 @@
 </script>
 
 <button
-  class={`btn btn-sm btn-has-icon ${isIgnored ? 'btn-secondary' : 'btn-outline-primary'}`}
+  class={`ItemButton btn btn-sm btn-has-icon ${isIgnored ? 'btn-secondary' : 'btn-outline-primary'}`}
   on:click={onClick}
->不感興趣</button>
+>
+  不感興趣
+</button>

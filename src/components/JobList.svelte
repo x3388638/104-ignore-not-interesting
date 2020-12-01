@@ -89,11 +89,15 @@
             href={`https://www.104.com.tw/job/${jobId}`}
             class="Actions__item Actions__item--link"
             target="_blank"
-          ><LinkIcon /></a>
+          >
+            <LinkIcon />
+          </a>
           <span
             class="Actions__item Actions__item--delete"
             on:click={onRemove({ jobName, jobNo, jobId, custName })}
-          ><TrashIcon /></span>
+          >
+            <TrashIcon />
+          </span>
         </span>
       </li>
     {/each}

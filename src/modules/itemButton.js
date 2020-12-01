@@ -53,7 +53,7 @@ const setup = () => {
 
   window.addEventListener(IGNORED_JOB_LIST_CHANGE, () => {
     isIgnored = isJobIgnored({ jobName, jobNo, jobId, custName })
-    Btn.$$set({ isIgnored })
+    Btn.$set({ isIgnored })
   })
 }
 
